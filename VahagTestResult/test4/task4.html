@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<style>
+    .board{
+
+        position:relative;
+        left:45px;
+
+    }
+td{ 
+
+width:55px;
+height:55px;
+background:black;
+transition: 0.8s;
+}
+
+td:nth-child(odd) {
+    width:55px;
+height:55px;
+     background: white;
+     transition: 0.8s;
+}
+
+.raows{
+
+    position:absolute;
+    color:grey;
+    height:510px;
+    width:45px;
+    font-size:55px;
+    background:azure;
+
+}
+
+.colows{
+
+    position:relative;
+    color:grey;
+    height:45px;
+    width:545px;
+    font-size:45px;
+    background:azure;
+
+}
+
+
+</style>
+
+<body>
+
+    <div class='raows'> 1 <br> 2 <br> 3 <br> 4 <br> 5 <br> 6 <br> 7 <br> 8 <br> </div>
+    <table class='board' border='2'>
+            
+
+
+    </table>
+    <div class='colows'>xx    A &nbsp; B &nbsp; C &nbsp; D  &nbsp;E &nbsp; F &nbsp; G &nbsp; H  </div>
+</body>
+<script
+  src="https://code.jquery.com/jquery-3.4.0.min.js"
+  integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+  crossorigin="anonymous"></script>
+<script>
+
+var colArray = ['A','B','C','D','E','F','G','H'];
+var rowArray = [1,2,3,4,5,6,7,8];  //rows
+var Posible = [];
+var filteredPositions = [];
+for(i = 0 ; i<8 ; i++){
+    $('.board').append('<tr>');
+
+    for(j = 0 ; j < 8 ; j++){
+
+        $('.board').append('<td id='+colArray[i]+rowArray[j] +'></td>');
+
+    }
+    $('.board').append('</tr>');
+}
+
+$('td').click(function(){
+
+
+    var rotation = 0;
+    var userInput = $(this).attr('id'); //taking id to see rows and cols
+    var col = userInput.charAt(0); //taking the first character to match with next coming array
+    var posColor = '';
+    var cellsColor = $(this).css('background-color');//selected cell color the move one will be the oposite of it 
+      if  (cellsColor == 'rgb(0,0,0)') { 
+          posColor = 'rgb(255,255,255)';
+      }
+      if (cellsColor == 'rgb(255,255,255)' ) {
+           posColor = 'rgb(0,0,0)';
+      }
+        
+    console.log(posColor);
+   
+
+
+    var row = userInput.charAt(1); // the value of second character in input
+    
+
+
+    if( filteredPositions != [] ){
+        filteredPositions.forEach(element => {
+                        $('#'+element).css('background',posColor);
+                       
+                    });
+                    filteredPositions = [];
+    }  else {filteredPositions.forEach(element => {
+                        $('#'+element).css('background',cellsColor);
+                      
+                    });
+                    filteredPositions = [];
+    }   
+    
+    
+
+//creating virtual board not visible
+for(i = 0 ; i<8 ; i++){
+ 
+
+    for(j = 0 ; j < 8 ; j++){
+
+        //checking for both arrays if rows and cols values  matched with array values
+       if(colArray[i] == col && rowArray[j] == row){
+        
+        var one,two,three,four,five,six,seven,eight; // this varuables are created for filtering and not showing Nan or Undefined in the final output
+
+            //checking if the positions exist than to show on the alert
+            // there are 8 posible places that out knight can go and if the knight is in z1
+            // there is onoly 2 so we check if that places exist than filter them to show in the end
+            if(colArray[i+1] && rowArray[j+2]){
+            one =  colArray[i+1]+rowArray[j+2];
+            }
+            if(colArray[i+2] && rowArray[j+1]){
+             two = colArray[i+2]+rowArray[j+1];
+            }
+            if(colArray[i-2] && rowArray[j-1]){
+             three = colArray[i-2]+rowArray[j-1];
+            }
+            if(colArray[i-1] && rowArray[j-2]){
+             four =  colArray[i-1]+rowArray[j-2];
+            }
+            if(colArray[i+1] && rowArray[j-2]){
+            five =  colArray[i+1]+rowArray[j-2];
+            }
+            if ( colArray[i+2] && rowArray[j-1]){
+            six =  colArray[i+2]+rowArray[j-1];
+            }
+            if(colArray[i-1] && rowArray[j+2]){
+            seven = colArray[i-1]+rowArray[j+2];
+            }
+            if(colArray[i-2] && rowArray[j+1]){
+            eight =  colArray[i-2]+rowArray[j+1];
+            }
+
+          
+
+           //pushing possible positions in array
+            Posible.push(one,two,three,four,five,six,seven,eight);
+        
+            // final filtering to not get Nan and undefined if the locations(positions) doesnt exist
+           filteredPositions = Posible.filter(function (el) {
+                return el != null;
+                    });
+
+         //and alerting the filtered version
+           // alert(filteredPositions);
+
+            
+            filteredPositions.forEach(element => {
+                        rotation+=180;
+                        $('#'+element).css('background','green');
+                        $('#'+element).css('transform','rotatey('+rotation+'deg)');
+                    });
+
+       }
+    }
+
+   
+
+}
+Posible = []; // posible moves array empty each time after click;
+})
+</script>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <input id='knightPos'/>
+    <button id='show'>SHOW POsitions</button>
+</body>
+<script
+  src="https://code.jquery.com/jquery-3.4.0.min.js"
+  integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+  crossorigin="anonymous"></script>
+<script>
+
+var colArray; // cols
+var rowArray = [1,2,3,4,5,6,7,8];  //rows
+
+$('#show').click(function(){
+    var userInput = $('#knightPos').val(); //taking input value
+    var col = userInput.charAt(0); //taking the first character to match with next coming array
+
+
+    // here i am doing a check for if user types a lowercase one or an uppercase 
+    //than creating a col array according to the user input case
+    if(col == col.toLowerCase()){
+         colArray = ['a','b','c','d','e','f','g','h']; // if lowercase input was given the output is lowercase
+    }else if(col == col.toUpperCase()){
+    colArray = ['A','B','C','D','E','F','G','H']; // same thing here only its uppercase one
+    }
+
+    var row = userInput.charAt(1); // the value of second character in input
+    var Posible = []; // posible moves array empty each time after click
+
+
+//creating virtual board not visible
+for(i = 0 ; i<8 ; i++){
+    for(j = 0 ; j < 8 ; j++){
+
+
+        //checking for both arrays if rows and cols values  matched with array values
+       if(colArray[i] == col && rowArray[j] == row){
+        var one,two,three,four,five,six,seven,eight; // this varuables are created for filtering and not showing Nan or Undefined in the final output
+
+            //checking if the positions exist than to show on the alert
+            // there are 8 posible places that out knight can go and if the knight is in z1
+            // there is onoly 2 so we check if that places exist than filter them to show in the end
+            if(colArray[i+1] && rowArray[j+2]){
+            one =  colArray[i+1]+rowArray[j+2];
+            }
+            if(colArray[i+2] && rowArray[j+1]){
+             two = colArray[i+2]+rowArray[j+1];
+            }
+            if(colArray[i-2] && rowArray[j-1]){
+             three = colArray[i-2]+rowArray[j-1];
+            }
+            if(colArray[i-1] && rowArray[j-2]){
+             four =  colArray[i-1]+rowArray[j-2];
+            }
+            if(colArray[i+1] && rowArray[j-2]){
+            five =  colArray[i+1]+rowArray[j-2];
+            }
+            if ( colArray[i+2] && rowArray[j-1]){
+            six =  colArray[i+2]+rowArray[j-1];
+            }
+            if(colArray[i-1] && rowArray[j+2]){
+            seven = colArray[i-1]+rowArray[j+2];
+            }
+            if(colArray[i-2] && rowArray[j+1]){
+            eight =  colArray[i-2]+rowArray[j+1];
+            }
+
+           //pushing possible positions in array
+            Posible.push(one,two,three,four,five,six,seven,eight);
+        
+            // final filtering to not get Nan and undefined if the locations(positions) doesnt exist
+            var filteredPositions = Posible.filter(function (el) {
+                return el != null;
+                    });
+
+         //and alerting the filtered version
+            alert(filteredPositions);
+       }
+    }
+}})
+</script>
+</html>

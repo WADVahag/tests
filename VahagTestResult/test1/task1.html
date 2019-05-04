@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Task1</title>
+</head>
+<style>
+.form{
+    border:2px inset royalblue;
+    position:relative;
+    margin:0 auto;
+    width:33vw;
+    height:35vh;
+    text-align: center;
+
+}
+.form *{
+
+position:relative;
+width:21vw;
+margin:5px auto;
+text-align:center;
+
+}
+</style>
+<body>
+    <div class='form'>
+      <br>  First Number<br>
+        <input type='number' id = 'firstInput' /><br>
+        <br>  Second Number<br>
+        <input type='number' id = 'secondInput' /><br>
+        <br> Result <br>
+        <div id='result'></div>
+
+        <button id = 'main'> Press ME</button>
+
+    </div>
+
+
+</body>
+<script
+  src="https://code.jquery.com/jquery-3.4.0.min.js"
+  integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+  crossorigin="anonymous"></script>
+
+<script>
+$('#main').click(function(){
+    $('#result').html(firstInput.value/1 +  secondInput.value/1);
+    alert( firstInput.value/1 +  secondInput.value/1  ); 
+})
+</script>
+
+</html>

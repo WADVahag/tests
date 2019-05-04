@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<style>
+
+body{
+background:rgb(21, 36, 31);
+color:azure;
+
+}
+.field{
+    border:1px solid azure;
+    position:relative;
+    width:19vw;
+    height:19vw;
+    margin: 2vw auto;
+    background:rgba(192, 192, 192, 0.219);
+}
+.outerP{
+    border: 1px solid azure;
+    position:relative;
+    float:left;
+    width: 4vw;
+    height: 4vw;
+    margin:0.3vw;
+}
+.innerP{
+    position: absolute;
+    width:100%;
+    height:100%;
+    margin:0;
+    padding:0;
+    background: white;
+}
+#reset{
+    width:145px;
+height:25px;
+border:1px inset red;
+color:white;
+background:red;
+border-radius:15%;
+
+}
+#start{
+
+width:145px;
+height:25px;
+border:1px inset green;
+color:white;
+background:green;
+border-radius:15%;
+
+
+}
+.timer{
+
+    font-size:35px;
+
+}
+</style>
+<body>
+    <center><H1> Нажмите на кнопку Играть </H1></center>
+    <div border=1 class='field'> </div>
+    <center><button id='start'>  "Играть"  </button>
+    <button id='reset'> RESET </button>
+    <p class = 'timer'> <label id="minutes">00</label>:<label id="seconds">00</label></p></center>
+</body>
+<script
+  src="https://code.jquery.com/jquery-3.4.0.min.js"
+  integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+  crossorigin="anonymous"></script>
+<script>
+var minutesLabel = document.getElementById("minutes");
+var secondsLabel = document.getElementById("seconds");
+var totalSeconds = 0;
+var colors = ['red','green','blue','orange','pink','royalblue','lime','darkred','red','green','blue','orange','pink','royalblue','lime','darkred'];
+var marray = []; // Array for Matching checks
+var match = 0; // counter for founded matches
+
+//shuffle for array because this javascript dont have shuffle method unless like PHP does
+function shuffle(a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
+}
+
+var shuffledColors = shuffle(colors); // shuffled array for creating the divs
+
+//divs creation process with suffled background values from the upper variable
+shuffledColors.forEach(element => {
+
+    $('.field').append("<div class='outerP' id='"+element+"' style='background:"+element+";font-size:0'><div class='innerP' id='"+element+"2'></div></div>")
+    
+});
+
+//on the first click timer starts ticking and you willl be allowed to play
+$('#start').one('click',function(){
+
+
+//timer Starts here and ends when the match variable will be equal to 8 
+//that means that every div was opened
+setInterval(setTime, 1000);
+
+function setTime() {
+
+    if(match != 8){
+  ++totalSeconds;
+  secondsLabel.innerHTML = pad(totalSeconds % 60);
+  minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+    }
+}
+
+function pad(val) {
+  var valString = val + "";
+  if (valString.length < 2) {
+    return "0" + valString;
+  } else {
+    return valString;
+  }
+}
+
+//timer ends here
+
+//checking if all matches are found
+function checkWin(match){
+    if(match == 8){
+
+        alert(' Победа \n '+minutesLabel.innerHTML+' минут и '+secondsLabel.innerHTML+' секунд ');
+    }
+}
+
+//hiding the inner div and taking the id attribute to put on the match checking array
+$('.innerP').click(function(){
+    $(this).hide(301);
+    marray.push($(this).parent().attr('id'));
+
+    //checking count of opened divs and equality of their ids
+    checkTwo();
+    //checking if user wins and showing the time if so
+    checkWin(match);
+    
+})
+
+    //checking count of opened divs and equality of their ids
+    // if they are equal than the match will be 1 than 2 and so on until 8
+    // if match wasnt succed it will make the marray to empty so that the next click will be working normally
+    //  same goes if match was met too 
+function checkTwo(){
+        if(marray[0] == marray[1]){
+
+            match++;
+            marray = [];
+
+        }else{
+            if(marray.length == 2){
+            $('#'+marray[0]+'2,#'+marray[1]+'2').show(300);
+            marray = [];
+            }
+        }
+    }
+})
+
+//simply refreshing the page
+$('#reset').click(function(){
+    document.location.reload(true);
+})
+
+</script>
+</html>
